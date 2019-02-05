@@ -80,12 +80,4 @@ void receiveEvent() {
   stepper0.setSpeed(speed0);
   stepper1.setSpeed(speed1);
   stepper2.setSpeed(speed2);
-
-  Serial.println("Speed0, Speed1, Speed2: ");
-  Serial.print(speed0);
-  Serial.print(", ");
-  Serial.print(speed1);
-  Serial.print(", ");
-  Serial.println(speed2);
-  Serial.println();
 }
