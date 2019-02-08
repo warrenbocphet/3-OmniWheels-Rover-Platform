@@ -6,8 +6,8 @@
 
 ////////////////////// For stepper motors /////////////////////////
 int resolution = 8;
-int threshold_velocity = 500; // in step/s
-float rover_radius = 19.3; // in cm
+int threshold_velocity = 800; // in step/s
+float rover_radius = 13.7; // in cm
 float wheel_radius = 5.22; // in cm
 float constant_linearVelocity = threshold_velocity*((wheel_radius*PI)/(resolution*100)); // in cm/s
 
@@ -65,51 +65,51 @@ int twobytes1int(byte high, byte low)
 }
 
 struct speed {
-	byte send_speed_low;
-	byte send_speed_high;
-	byte send_speed_dir;
+  byte send_speed_low;
+  byte send_speed_high;
+  byte send_speed_dir;
 };
 
 void oneint2bytes(int speed_int, struct speed* speed) {
-	if (speed_int < 0)	{
-		speed_int = speed_int*-1;
-		speed->send_speed_low = speed_int & 0xFF;
-		speed->send_speed_high = (speed_int >> 8) & 0xFF;
-		speed->send_speed_dir = 1;
+  if (speed_int < 0)  {
+    speed_int = speed_int*-1;
+    speed->send_speed_low = speed_int & 0xFF;
+    speed->send_speed_high = (speed_int >> 8) & 0xFF;
+    speed->send_speed_dir = 1;
 
-	} else {
-		speed->send_speed_low = speed_int & 0xFF;
-		speed->send_speed_high = (speed_int >> 8) & 0xFF;
-		speed->send_speed_dir = 3;
-	}
+  } else {
+    speed->send_speed_low = speed_int & 0xFF;
+    speed->send_speed_high = (speed_int >> 8) & 0xFF;
+    speed->send_speed_dir = 3;
+  }
 }
 
-void send_speed(int speed0_int, int speed1_int, int speed2_int)	{
-	struct speed speed0;
-	struct speed speed1;
-	struct speed speed2;
+void send_speed(int speed0_int, int speed1_int, int speed2_int) {
+  struct speed speed0;
+  struct speed speed1;
+  struct speed speed2;
 
-	byte buf[9];
+  byte buf[9];
 
-	oneint2bytes(speed0_int, &speed0);
-	oneint2bytes(speed1_int, &speed1);
-	oneint2bytes(speed2_int, &speed2);
+  oneint2bytes(speed0_int, &speed0);
+  oneint2bytes(speed1_int, &speed1);
+  oneint2bytes(speed2_int, &speed2);
 
-	buf[0] = speed0.send_speed_high;
-	buf[1] = speed0.send_speed_low;
-	buf[2] = speed0.send_speed_dir;
+  buf[0] = speed0.send_speed_high;
+  buf[1] = speed0.send_speed_low;
+  buf[2] = speed0.send_speed_dir;
 
-	buf[3] = speed1.send_speed_high;
-	buf[4] = speed1.send_speed_low;
-	buf[5] = speed1.send_speed_dir;
+  buf[3] = speed1.send_speed_high;
+  buf[4] = speed1.send_speed_low;
+  buf[5] = speed1.send_speed_dir;
 
-	buf[6] = speed2.send_speed_high;
-	buf[7] = speed2.send_speed_low;
-	buf[8] = speed2.send_speed_dir;
+  buf[6] = speed2.send_speed_high;
+  buf[7] = speed2.send_speed_low;
+  buf[8] = speed2.send_speed_dir;
 
-	Wire.beginTransmission(97); // transmit to device #97
-	Wire.write(buf, 9);
-	Wire.endTransmission();
+  Wire.beginTransmission(97); // transmit to device #97
+  Wire.write(buf, 9);
+  Wire.endTransmission();
 }
 
 //////////////////////// For integration /////////////////////////
@@ -224,7 +224,7 @@ void setupGyro(LSM9DS1 imu)
   // 1 = 14.9    4 = 238
   // 2 = 59.5    5 = 476
   // 3 = 119     6 = 952
-  imu.settings.gyro.sampleRate = 2; // 59.5Hz ODR
+  imu.settings.gyro.sampleRate = 3; // 119 Hz ODR
   // [bandwidth] can set the cutoff frequency of the gyro.
   // Allowed values: 0-3. Actual value of cutoff frequency
   // depends on the sample rate. (Datasheet section 7.12)
@@ -277,7 +277,7 @@ unsigned int elapsedTime1 = 0; // use with time_frame
 unsigned long start2 = 0;
 unsigned int elapsedTime2 = 0; // use to do displacement integration
 
-unsigned int time_frame = 25;
+unsigned int time_frame = 10;
 
 
 ////////////////// For Filtering ////////////////////////////
@@ -407,6 +407,7 @@ void loop() {
 
     if (a == 254) // reset
     {
+      tcaselect(3);
       send_speed(0, 0, 0);
 
       x = 0;
@@ -650,30 +651,32 @@ void loop() {
       ///////// Start integration to find (x,y) ///////////
 
       // recalculate v_x, v_y, w
-   	  w = 1/(3*rover_radius)*(speed0 + speed1 + speed2);
-	  v = (sqrt(3)/3)*(speed2 - speed0);
-	  v_n = 1/3.0*(speed2 + speed0) - 2/3.0*speed1;
+      w = 1/(3*rover_radius)*(speed0 + speed1 + speed2);
+    v = (sqrt(3)/3)*(speed2 - speed0);
+    v_n = 1/3.0*(speed2 + speed0) - 2/3.0*speed1;
 
-	  v_x = v*cos(phi_t(phi)) - v_n*sin(phi_t(phi));
-	  v_y = v*sin(phi_t(phi)) + v_n*cos(phi_t(phi));
+    v_x = v*cos(phi_t(phi)) - v_n*sin(phi_t(phi));
+    v_y = v*sin(phi_t(phi)) + v_n*cos(phi_t(phi));
 
-	  elapsedTime2 = millis() - start2;
-	  start2 = millis();
+    elapsedTime2 = millis() - start2;
+    start2 = millis();
 
-	  // calculate x, y phi
-	  x = x + v_x*elapsedTime2/1000.0;
-	  y = y + v_y*elapsedTime2/1000.0;
-	  phi = phi + w*elapsedTime2/1000.0;
+    // calculate x, y phi
+    x = x + v_x*elapsedTime2/1000.0;
+    y = y + v_y*elapsedTime2/1000.0;
+    phi = phi + w*elapsedTime2/1000.0;
 
-	  send_speed(v0s, v1s, v2s);
+    tcaselect(3);
+    send_speed(v0s, v1s, v2s);
 
-	  // stopping condition
-	  if (abs(dx) < 0.5 && abs(dy) < 0.5 && abs(dphi) < 0.015)
-	  {
-	    // stop
-	    send_speed(0, 0, 0);
+    // stopping condition
+    if (abs(dx) < 0.5 && abs(dy) < 0.5 && abs(dphi) < 0.015)
+    {
+      // stop
+      tcaselect(3);
+      send_speed(0, 0, 0);
 
-	    start_flag = 0;
-	  } 
+      start_flag = 0;
+    } 
    }
 }
