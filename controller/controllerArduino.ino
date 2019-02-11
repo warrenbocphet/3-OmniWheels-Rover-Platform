@@ -19,7 +19,7 @@ float constant_linearVelocity = threshold_velocity*((wheel_radius*PI)/(resolutio
 
 //////////////////// For serial communication ////////////////////
 byte a;
-byte buf[9];
+byte buf[11];
 byte targetX_H;
 byte targetX_L;
 byte targetX_dir; // direction should be either 1 for CCW or 3 for CW. This number will later be...
@@ -351,7 +351,7 @@ void loop()
     a = Serial.read();
     if (a == 255) // get coordinate
     {
-      Serial.readBytes(buf, 12);
+      Serial.readBytes(buf, 11);
       targetX_H = buf[0];
       targetX_L = buf[1];
       targetX_dir = buf[2];
