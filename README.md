@@ -42,17 +42,17 @@ https://www.researchgate.net/publication/256089847_Dynamical_Models_for_Omni-dir
 ## My notes and comments:
 1. All the files you need to replicate the platform should be in this GitHub master branch. Don't worry about the other branch beside the master. In each of those master branch, there is a readme file, it should help you to understand those files better.
 
-2. The Protoneer Shield has the same architecture with the Arduino Nano. HOWEVER, the board is made for CNC machine, it does not mean for what we are using it for. **We need to use I2C communication on the board. You can find A4/SDA labeled on the board, A5/SCL is the Probe pin, you can also find it near the 12-36V terminal block.** Also, you have to use an USBtinyISP to upload any code to the Protoneer Shield.
-Here is the protoneer shield: https://wiki.protoneer.co.nz/Raspberry_Pi_CNC
-The protoneer use GRBL standard layout, which can be found here: https://github.com/grbl/grbl/wiki/Connecting-Grbl
+2. The Protoneer Shield has the same architecture with the Arduino Nano. HOWEVER, the board is made for CNC machine, it does not mean for what we are using it for. **We need to use I2C communication on the board. You can find A4/SDA labeled on the board, A5/SCL is the Probe pin, you can also find it near the 12-36V terminal block.** Also, you have to use an USBtinyISP to upload any code to the Protoneer Shield.  
+Here is the protoneer shield: https://wiki.protoneer.co.nz/Raspberry_Pi_CNC  
+The protoneer use GRBL standard layout, which can be found here: https://github.com/grbl/grbl/wiki/Connecting-Grbl  
 
 3. The only reason I'm using another Nano plus the shield is because I found the shield is not fast enough to read the sensors (3 of them) AND driving 3 stepper motors AND do the calculation. The reason I'm not using RPI to get sensor data is because I want to use the library on Arduino, and also it helps with multi-tasking (i.e displaying real time data and sending data to host computer, it's a mess if you try to have RPI do anything that has to do with controlling the platform). Thus, RPI should only send the destination/command to the rover, and also do computer vision tasks (which I have not yet to include). That said, you are more than welcome to try.
 
 4. The sensor data is very noisy, you have to run it through a Kalman Filter (or some other sort of filter). The one I'm using is not sensor fusion, future developers should make it sensor fusions. How? Idk.
 Anyways, for those not very familiar with KF, here's the resource I learnt it from: 
-  a. https://home.wlu.edu/~levys/kalman_tutorial/ (I learnt the theory here).
-  b. https://scipy-cookbook.readthedocs.io/items/KalmanFiltering.html?highlight=kalman (I based my code here, it's in Python but I rewrite it in C, and make some modification).
-  c. http://www.cs.unc.edu/~welch/media/pdf/kalman_intro.pdf (for those who are more math savy).
+- https://home.wlu.edu/~levys/kalman_tutorial/ (I learnt the theory here).
+- https://scipy-cookbook.readthedocs.io/items/KalmanFiltering.html?highlight=kalman (I based my code here, it's in Python but I rewrite it in C, and make some modification).
+- http://www.cs.unc.edu/~welch/media/pdf/kalman_intro.pdf (for those who are more math savy).
   
 ## Suggestion for future developers:
 1. Redo the host computer GUI. Instead of using Matlab's, use Python instead and make an exact one like onboard GUI.
@@ -60,11 +60,11 @@ Anyways, for those not very familiar with KF, here's the resource I learnt it fr
 3. Sensor fusion for better accuracy.
 
 ## If you have any question about:
-1. Onboard GUI: Yiwei Sun
+1. Onboard GUI: Yiwei Sun  
 Email: a1673590@student.adelaide.edu.au
 
-2. Host computer GUI: Azizul Hakim
+2. Host computer GUI: Azizul Hakim  
 Email: a1722261@student.adelaide.edu.au
 
-3. Anything not GUI-related: Anh Tran, which is me. 
+3. Anything not GUI-related: Anh Tran, which is me.  
 Email address: a1713568@student.adelaide.edu.au OR tranluuvietanh@gmail.com
