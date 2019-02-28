@@ -5,9 +5,16 @@ Summer research 2018-2019. Rover platform development for autonomous and multi a
 ```
 Project Description:
 
-Autonomous systems and multi-agent systems are broadly researched and applied in both academic and commercial fields. To test these systems and evaluate the performance, Unmanned Ground Vehicles (UGV) are commonly used as the experimental platform because it is easy to be operated and with fewer restrictions. UGVs is capable of being used for a variety of researches and applications, such as robotic systems, formation control algorithms and commercialise applications. However, most of the commercial products are limited by the diversity of motion types and the accuracy of movements while are used for academic experiments.  Therefore, to research on developing new and improving existing autonomous systems, a suitable UGV platform is demanded, which should provide various freedom of movement being commanded by the system and detecting environmental data accurately.
+Autonomous systems and multi-agent systems are broadly researched and applied in both academic and commercial fields. 
+To test these systems and evaluate the performance, Unmanned Ground Vehicles (UGV) are commonly used as the experimental platform because it is easy to be operated and with fewer restrictions. 
+UGVs is capable of being used for a variety of researches and applications, such as robotic systems, formation control algorithms and commercialise applications. 
+However, most of the commercial products are limited by the diversity of motion types and the accuracy of movements while are used for academic experiments.  
+Therefore, to research on developing new and improving existing autonomous systems, a suitable UGV platform is demanded, which should provide various freedom of movement being commanded by the system and detecting environmental data accurately.
 
-This summer, we are introducing a project to develop a physical UGV platform for research purposes. The platform will be with three degrees of freedom, which means it is free to change position as surge (motion along y-axis), sway (motion along x-axis) and yaw (rotation on z-axis). The platform will also be implemented with sensors, which can detect information for navigation and feedback control. It will also be interfaced with popular modelling software tools, such as Matlab, Simulink and Labview.
+This summer, we are introducing a project to develop a physical UGV platform for research purposes. 
+The platform will be with three degrees of freedom, which means it is free to change position as surge (motion along y-axis), sway (motion along x-axis) and yaw (rotation on z-axis). 
+The platform will also be implemented with sensors, which can detect information for navigation and feedback control. 
+It will also be interfaced with popular modelling software tools, such as Matlab, Simulink and Labview.
 
 on behalf of
 
@@ -24,9 +31,9 @@ Hong Gunn Chew
 ### Video of rover running:
 https://www.youtube.com/watch?v=FaH9vIkFXlA
 ### Onboard GUI:
-[[https://github.com/vitsensei/3-OmniWheels-Rover-Platform/blob/master/images/Onboard%20GUI.png]]
+![alt text](https://github.com/vitsensei/3-OmniWheels-Rover-Platform/blob/master/images/Onboard%20GUI.png)
 ### Host computer GUI:
-[[https://github.com/vitsensei/3-OmniWheels-Rover-Platform/blob/master/images/GUI_host.png]]
+![alt text](https://github.com/vitsensei/3-OmniWheels-Rover-Platform/blob/master/images/GUI_host.png)
 ### Video of onboard GUI working with host computer GUI:
 https://www.youtube.com/watch?v=7Ckd2ylmhWI
 ## Research paper that the rover's dynamic module based on:
